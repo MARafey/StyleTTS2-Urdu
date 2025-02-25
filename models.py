@@ -24,6 +24,8 @@ from Modules.discriminators import MultiPeriodDiscriminator, MultiResSpecDiscrim
 from munch import Munch
 import yaml
 
+from transformers import AutoModel, AutoTokenizer
+
 class LearnedDownSample(nn.Module):
     def __init__(self, layer_type, dim_in):
         super().__init__()
@@ -610,6 +612,10 @@ def load_ASR_models(ASR_MODEL_PATH, ASR_MODEL_CONFIG):
     _ = asr_model.train()
 
     return asr_model
+
+# Initialize the new model and tokenizer
+bert = AutoModel.from_pretrained("ai4bharat/indic-bert")
+tokenizer = AutoTokenizer.from_pretrained("ai4bharat/indic-bert")
 
 def build_model(args, text_aligner, pitch_extractor, bert):
     assert args.decoder.type in ['istftnet', 'hifigan'], 'Decoder type unknown'
